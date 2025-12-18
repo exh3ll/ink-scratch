@@ -13,15 +13,16 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selected = 0;
 
   final List<Widget> _pages = [
-    _HomeDashboard(),
-    Center(child: Text('Library (placeholder)')),
-    Center(child: Text('Bookmarks (placeholder)')),
-    Center(child: Text('Profile (placeholder)')),
+    const _HomeDashboard(),
+    const Center(child: Text('Library (placeholder)')),
+    const Center(child: Text('Bookmarks (placeholder)')),
+    const Center(child: Text('Profile (placeholder)')),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text('Ink Scratch', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.transparent,
@@ -37,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      extendBodyBehindAppBar: true,
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -48,31 +48,63 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: SafeArea(child: _pages[_selected]),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selected,
-        onTap: (i) => setState(() => _selected = i),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white70,
-        backgroundColor: AppColors.orange.withOpacity(0.9),
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
-            label: 'Library',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [AppColors.orange, AppColors.red],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.bookmark),
-            label: 'Bookmarks',
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 12,
+              offset: Offset(0, -4),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          child: BottomNavigationBar(
+            currentIndex: _selected,
+            onTap: (i) => setState(() => _selected = i),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white70,
+            showUnselectedLabels: true,
+            type: BottomNavigationBarType.fixed,
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.library_books),
+                label: 'Library',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.bookmark),
+                label: 'Bookmarks',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Profile',
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 }
 
 class _HomeDashboard extends StatelessWidget {
-  const _HomeDashboard({super.key});
+  const _HomeDashboard();
 
   @override
   Widget build(BuildContext context) {
@@ -80,15 +112,18 @@ class _HomeDashboard extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          // greeting
+          // Greeting + avatar
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text(
+            children: [
+              const Text(
                 'Good evening',
                 style: TextStyle(color: Colors.white70, fontSize: 14),
               ),
-              CircleAvatar(child: Icon(Icons.person)),
+              CircleAvatar(
+                backgroundColor: AppColors.orange,
+                child: const Icon(Icons.person, color: Colors.white),
+              ),
             ],
           ),
           const SizedBox(height: 18),
@@ -139,7 +174,7 @@ class _HomeDashboard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 18),
-          // Grid of categories and stuff
+          // Grid of categories
           Expanded(
             child: GridView.count(
               crossAxisCount: 2,
